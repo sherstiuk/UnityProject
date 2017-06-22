@@ -30,30 +30,27 @@ public class MovingPlatform : MonoBehaviour {
     private void Update() {
         time_to_wait -= Time.deltaTime;
 		if(time_to_wait <= 0) {
-		//Do something
+		    //Do something
+            Vector3 my_pos = this.transform.position;
+            Vector3 target;
+
+            if (is_moving_A) {
+                target = this.pointA;
+            } else {
+                target = this.pointB;
+            }
+
+            if(isArrived(target, my_pos)) {
+                is_moving_A = !is_moving_A;
+                time_to_wait = this.WaitTime;
+            } else {
+                Vector3 destination = target - my_pos;
+                float move = this.Speed * Time.deltaTime;
+                float distance = Vector3.Distance(destination, my_pos);
+
+                Vector3 move_vec = destination.normalized * Mathf.Min(move, distance);
+                this.transform.position += move_vec;
+            } 
 		}
-
-        Vector3 target;
-
-        if (is_moving_A) {
-            target = this.pointA;
-        } else {
-            target = this.pointB;
-        }
-
-        Vector3 my_pos = this.transform.position;
-
-        if(isArrived(target, my_pos)) {
-            is_moving_A = !is_moving_A;
-            time_to_wait = this.WaitTime;
-        }
-        else {
-            Vector3 destination = target - my_pos;
-            float move = this.Speed * Time.deltaTime;
-            float distance = Vector3.Distance(destination, my_pos);
-
-            Vector3 move_vec = destination.normalized * Mathf.Min(move, distance);
-            this.transform.position += move_vec;
-        }
     }
 }

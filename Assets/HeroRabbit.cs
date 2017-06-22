@@ -65,7 +65,12 @@ public class HeroRabbit : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Linecast(from, to, layer_id);
             if (hit) isGrounded = true;
             else isGrounded = false;
+            if(hit) {
+                if(hit.transform != null && hit.transform.GetComponent<MovingPlatform>() != null)
+                    SetNewParent(this.transform, hit.transform);
+            } else SetNewParent(this.transform, this.heroParent);
 
+            
             if (Input.GetButtonDown("Jump") && isGrounded) this.JumpActive = true;
             if (this.JumpActive) {
                 if (Input.GetButton("Jump")) {
