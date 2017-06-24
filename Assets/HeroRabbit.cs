@@ -15,18 +15,24 @@ public class HeroRabbit : MonoBehaviour {
     Transform heroParent = null;
     Animator animator;
 
-    bool big = false;
-    bool dying = false;
+    public bool big = false;
+    public bool dying = false;
     public bool shiny = false;
     float shineleft = 0f;
     int healths = 1;
 
+    public static HeroRabbit lastRabbit = null;
+    
+    void Awake() {
+        lastRabbit = this;
+    }
+
 	// Use this for initialization
 	void Start () {
-		myBody = this.GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
 		LevelController.current.setStartPosition(transform.position);
         this.heroParent = this.transform.parent;
+        myBody = this.GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -99,27 +105,48 @@ public class HeroRabbit : MonoBehaviour {
         }
 	}
 
+    public void jump() {
+        Vector2 vel = myBody.velocity;
+        vel.y = 7;
+        myBody.velocity = vel;
+    }
+    public void death() {
+        --healths;
+        dying = true;
+        animator.SetBool("die", true);
+        Wait = 2.0f;
+    }
+
     public void Bomb() {
         if(!shiny) {
             if (big) {
                 big = false;
                 this.transform.localScale =  Vector3.one;
-                myBody.velocity /= 2;
+                myBody.velocity /= 3;
                 shiny = true;
                 shineleft = 4.0f;
             }
             else {
-                --healths;
-                dying = true;
-                animator.SetBool("die", true);
-                Wait = 2.0f;
+                death();
             }
         }
     }
+
     public void Mushroom() {
         big = true;
         this.transform.localScale =  Vector3.one*2;
-        myBody.velocity *= 2;
+        myBody.velocity *= 3;
+    }
+
+    public void Carrot() {
+        if (big) {
+            big = false;
+            this.transform.localScale =  Vector3.one;
+            myBody.velocity /= 3;
+        }
+        else {
+            death();
+        }
     }
 
     static void SetNewParent(Transform obj, Transform new_parent) {

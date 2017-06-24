@@ -15,6 +15,9 @@ public class LevelController : MonoBehaviour {
 		this.startingPosition = pos;
 	}
 	public void onRabbitDeath(HeroRabbit rabbit) {
+		rabbit.big = false;
+		rabbit.shiny = false;
+		rabbit.transform.localScale =  Vector3.one;
 		rabbit.transform.position = this.startingPosition;
 	}
 }
