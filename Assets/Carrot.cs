@@ -6,7 +6,6 @@ public class Carrot : Collectable {
 	public float lifetime = 3f;
 	public float speed = 3f;
 	float direction = 1f;
-	float last_carrot = 0f;
 	Vector3 relocation;
 	
 	void Start() {

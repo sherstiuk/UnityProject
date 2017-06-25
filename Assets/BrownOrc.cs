@@ -6,11 +6,9 @@ public class BrownOrc : Orc {
 	public GameObject prefabCarrot;
 
 	public float throwInterval = 3f;
-	float last_carrot = 0;
 	float Wait;
 	
 	protected override void noticed() {
-		float value = this.getDirection();
 		mode = Mode.Throwing; 
 		if (mode != Mode.Death) {
 			animator.SetBool("walk", false);
